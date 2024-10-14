@@ -142,7 +142,6 @@ namespace Zenko.Entities
         }
         public V2Int GetIdentifierDirectionVector()
         {
-            V2Int entranceDirection = V2Int.zero;
             switch (this.GetIdentifier())
             {
                 case "PL":
