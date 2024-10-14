@@ -165,5 +165,28 @@ namespace Zenko.Entities
             }
             return entranceDirection;
         }
+        public string GetSeedType()
+        {
+            switch (identifier)
+            {
+                case "p":
+                    return "Wall";
+
+                case "l":
+                    return "Left";
+
+                case "r":
+                    return "Right";
+
+                case "u":
+                    return "Up";
+
+                case "d":
+                    return "Down";
+
+                default:
+                    throw new System.Exception("No valid seed type");
+            }
+        }
     }
 }
