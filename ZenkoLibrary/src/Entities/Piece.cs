@@ -143,27 +143,23 @@ namespace Zenko.Entities
         public V2Int GetIdentifierDirectionVector()
         {
             V2Int entranceDirection = V2Int.zero;
-            if (this.GetIdentifier() == "PL")
+            switch (this.GetIdentifier())
             {
-                entranceDirection = V2Int.left;
+                case "PL":
+                case "L":
+                    return V2Int.left;
+                case "PR":
+                case "R":
+                    return V2Int.right;
+                case "PU":
+                case "U":
+                    return V2Int.down;
+                case "PD":
+                case "D":
+                    return V2Int.up;
+                default:
+                    throw new System.Exception("Incorrect portal direction");
             }
-            else if (this.GetIdentifier() == "PR")
-            {
-                entranceDirection = V2Int.right;
-            }
-            else if (this.GetIdentifier() == "PU")
-            {
-                entranceDirection = V2Int.down;
-            }
-            else if (this.GetIdentifier() == "PD")
-            {
-                entranceDirection = V2Int.up;
-            }
-            if (entranceDirection == V2Int.zero)
-            {
-                throw new System.Exception("Incorrect portal direction");
-            }
-            return entranceDirection;
         }
         public string GetSeedType()
         {
