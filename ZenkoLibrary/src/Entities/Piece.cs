@@ -157,7 +157,7 @@ namespace Zenko.Entities
                 case "D":
                     return V2Int.up;
                 default:
-                    throw new System.Exception("Incorrect portal direction");
+                    throw new System.Exception("Incorrect portal direction" + GetIdentifier());
             }
         }
         public string GetSeedType()

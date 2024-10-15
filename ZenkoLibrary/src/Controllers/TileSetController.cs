@@ -106,7 +106,7 @@ namespace Zenko.Controllers
                 //KEEP ADJACENT ICARI
                 foreach (Piece otherPiece in tileSet.GetPlacedPieces())
                 {
-                    if (piece.IsIcarus())
+                    if (otherPiece.IsIcarus())
                     {
                         if (affectedPosition == otherPiece.GetBoardCoords() + otherPiece.GetIdentifierDirectionVector())
                         {
