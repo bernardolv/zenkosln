@@ -8,27 +8,41 @@ public class Program
     public static void Main()
     {
         Console.WriteLine("HI");
+
+        //Create level settings
         LevelSettings levelSettings = new LevelSettings();
         levelSettings.outerDimension = 6;
         levelSettings.innerDimension = 4;
         levelSettings.wallsAmount = 2;
 
-        MapGeneratorService generatorService = new MapGeneratorService(levelSettings, 1000);
+        //Holds current best map
+        Map bestMap = null;
 
+        //Create callback
         Func<Map, int, bool> callback = new Func<Map, int, bool>((Map map, int turns) =>
         {
 
-            foreach (string line in MapService.ConvertToStringArray(map))
+            if (bestMap == null || bestMap.GetSolution().GetTurns() < map.GetSolution().GetTurns())
+            {
+                bestMap = map;
+            }
+
+            return true;
+        });
+
+        MapGeneratorService generatorService = new MapGeneratorService(levelSettings, 100000);
+        generatorService.SetOnMapFoundCallBack(callback);
+        generatorService.Generate();
+
+
+        //Print result
+        if (bestMap != null)
+        {
+            foreach (string line in MapService.ConvertToStringArray(bestMap))
             {
                 Logger.Log(line);
             }
 
-            return false;
-        });
-
-        generatorService.SetOnMapFoundCallBack(callback);
-
-        generatorService.Generate();
-
+        }
     }
 }
