@@ -29,7 +29,7 @@ namespace Zenko
         public int holesAmount;
         public int fragilesAmount;
         public int woodsAmount;
-        public List<PieceType> pieceTypes;
+        public List<PieceType> pieceTypes = new List<PieceType>();
     }
     public enum ConditionType { Wind, Portal, NoSeedStop, PieceStop, MinTurns, NoWindFrontal, PortalBlocked };
 }
