@@ -9,6 +9,7 @@ namespace Zenko.Services
 {
     public class MapGeneratorService
     {
+        int intervalToPrint = 0;
         int attempts;
         LevelSettings levelSettings;
         List<Condition> conditions;
@@ -30,12 +31,21 @@ namespace Zenko.Services
             this.onMapFoundCallback = callBack;
         }
 
+        public void SetIntervalToPrint(int interval)
+        {
+            this.intervalToPrint = interval;
+        }
+
         public void Generate()
         {
             int i = 0;
             while (i < attempts)
             {
                 i++;
+                if (intervalToPrint != 0 && i % intervalToPrint == 0)
+                {
+                    Logger.Log(i);
+                }
                 string log = "";
                 log += "attempting ";
                 TileSet tileSet = TileSetFactory.TileSet(levelSettings);
@@ -45,12 +55,12 @@ namespace Zenko.Services
                     //TODO: Conditions
                     if (!onMapFoundCallback.Invoke(MapFactory.Map(tileSet, solution), solution.GetTurns()))
                     {
-                        Logger.Log(log);
+                        // Logger.Log(log);
                         Logger.Log("Process finished since callback calls it so.");
                         return;
                     }
                 }
-                Logger.Log(log);
+                // Logger.Log(log);
             }
             Logger.Log("Process finished since attempt count has been reached.");
         }
