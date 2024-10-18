@@ -42,25 +42,33 @@ namespace Zenko.Services
             while (i < attempts)
             {
                 i++;
-                if (intervalToPrint != 0 && i % intervalToPrint == 0)
+                try
                 {
-                    Logger.Log(i);
-                }
-                string log = "";
-                log += "attempting ";
-                TileSet tileSet = TileSetFactory.TileSet(levelSettings);
-                if (SolutionController.TrySolveWithPiecesNew(tileSet, levelSettings.pieceTypes.ToArray(), out Solution solution))
-                {
-                    // log += ", Found with turns: " + solution.GetTurns();
-                    //TODO: Conditions
-                    if (!onMapFoundCallback.Invoke(MapFactory.Map(tileSet, solution), solution.GetTurns()))
+                    if (intervalToPrint != 0 && i % intervalToPrint == 0)
                     {
-                        // Logger.Log(log);
-                        Logger.Log("Process finished since callback calls it so.");
-                        return;
+                        Logger.Log(i);
                     }
+                    string log = "";
+                    log += "attempting ";
+                    TileSet tileSet = TileSetFactory.TileSet(levelSettings);
+                    if (SolutionController.TrySolveWithPiecesNew(tileSet, levelSettings.GeneratePieceTypes().ToArray(), out Solution solution))
+                    {
+                        // log += ", Found with turns: " + solution.GetTurns();
+                        //TODO: Conditions
+                        if (!onMapFoundCallback.Invoke(MapFactory.Map(tileSet, solution), solution.GetTurns()))
+                        {
+                            // Logger.Log(log);
+                            Logger.Log("Process finished since callback calls it so.");
+                            return;
+                        }
+                    }
+                    // Logger.Log(log);
                 }
-                // Logger.Log(log);
+                catch (Exception e)
+                {
+                    Logger.Log("Skipped map generator service iteration due to error in process");
+                }
+
             }
             Logger.Log("Process finished since attempt count has been reached.");
         }

@@ -50,7 +50,8 @@ namespace Zenko.Factories
             List<V2Int> candidatePositions = TileSetService.GetIcePositions(tileSet, levelSettings.outerDimension);
 
             rnd = new System.Random();
-            for (int i = 0; i < levelSettings.wallsAmount; i++)
+            int wallsAmount = rnd.Next(levelSettings.wallsAmountMin, levelSettings.wallsAmountMax + 1);
+            for (int i = 0; i < wallsAmount; i++)
             {
                 int num = rnd.Next(0, candidatePositions.Count);
                 V2Int newPosition = candidatePositions[num];
@@ -59,7 +60,8 @@ namespace Zenko.Factories
             }
 
             rnd = new System.Random();
-            for (int i = 0; i < levelSettings.holesAmount; i++)
+            int holesAmount = rnd.Next(levelSettings.holesAmountMin, levelSettings.holesAmountMax + 1);
+            for (int i = 0; i < holesAmount; i++)
             {
                 int num = rnd.Next(0, candidatePositions.Count);
                 V2Int newPosition = candidatePositions[num];
@@ -68,7 +70,8 @@ namespace Zenko.Factories
             }
 
             rnd = new System.Random();
-            for (int i = 0; i < levelSettings.woodsAmount; i++)
+            int woodsAmount = rnd.Next(levelSettings.woodsAmountMin, levelSettings.woodsAmountMax + 1);
+            for (int i = 0; i < woodsAmount; i++)
             {
                 int num = rnd.Next(0, candidatePositions.Count);
                 V2Int newPosition = candidatePositions[num];
@@ -77,7 +80,8 @@ namespace Zenko.Factories
             }
 
             rnd = new System.Random();
-            for (int i = 0; i < levelSettings.fragilesAmount; i++)
+            int fragilesAmount = rnd.Next(levelSettings.fragilesAmountMin, levelSettings.fragilesAmountMax + 1);
+            for (int i = 0; i < fragilesAmount; i++)
             {
                 int num = rnd.Next(0, candidatePositions.Count);
                 V2Int newPosition = candidatePositions[num];
