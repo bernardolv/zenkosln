@@ -17,7 +17,7 @@ namespace Zenko.Services
     //try to get existing new state by looking through the active ones...
     public class SolverService
     {
-        const bool DEBUG = false;
+        const bool DEBUG = true;
 
         public bool TrySolveBoardGeneral(TileSet tileSet, out Solution solution)
         {
@@ -90,7 +90,7 @@ namespace Zenko.Services
                             if (boardActions.Contains(BoardAction.Fragile) || boardActions.Contains(BoardAction.Seed))
                             {
 
-                                if (DEBUG) Logger.Log("Seed on " + targetPosition);
+                                if (DEBUG) Logger.Log("Seed on " + targetPosition.ToString());
                                 newTileSet = newTileSet.Clone();
 
                                 // //Try to get an exiting tileset
@@ -107,17 +107,19 @@ namespace Zenko.Services
                                 //     {
                                 //         if (entry.Key.modifiedPositions[i].CompareTo(newTileSet.modifiedPositions[i]) != 0)
                                 //         {
-                                //             continue;
+                                //             same = false;
+                                //             break;
                                 //         }
                                 //     }
+                                //     if (!same)
+                                //     {
+                                //         continue;
+                                //     }
+                                //     if (DEBUG) Console.WriteLine("HI " + newTileSet.GetTile(targetPosition.ToModelCoordinates()).GetTileType());
                                 //     entry.Key.SetTile(targetPosition.ToModelCoordinates(), newTileSet.GetTile(targetPosition.ToModelCoordinates()));
                                 //     newTileSet = entry.Key;
                                 //     newTileSet.SetPlayerPosition(targetPosition.ToModelCoordinates());
-                                //     Console.WriteLine("HI " + newTileSet.GetTile(targetPosition.ToModelCoordinates()).GetTileType());
-                                //     if (targetPosition == new V3(3, 0, -1))
-                                //     {
-                                //         Console.WriteLine("ON IT " + currentDirection.ToModelCoordinates());
-                                //     }
+                                //     if (DEBUG) Console.WriteLine("HI " + newTileSet.GetTile(targetPosition.ToModelCoordinates()).GetTileType());
                                 //     break;
                                 // }
                                 newGameState.tileSet = newTileSet;
@@ -145,7 +147,7 @@ namespace Zenko.Services
                             }
                             if (boardActions.Contains(BoardAction.Fragile) || boardActions.Contains(BoardAction.Seed))
                             {
-                                if (DEBUG) Logger.Log("Seed on " + targetPosition);
+                                if (DEBUG) Logger.Log("Seed on " + targetPosition.ToString());
                                 newTileSet.GetTile((int)targetPosition.x, -(int)targetPosition.z).GetTileType();
                                 // newTileSet = newTileSet.Clone();
                             }

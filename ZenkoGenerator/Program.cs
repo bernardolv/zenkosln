@@ -12,8 +12,8 @@ public class Program
 {
     public static void Main()
     {
-        TestAlgorhithm();
-        // TestSpecificMap("generatedMaps202410161303.txt", 3148);
+        // TestAlgorhithm();
+        TestSpecificMap("test.txt", 711);
         // RepositoryService testRepositoryService = new RepositoryService();
         // testRepositoryService.InitializeRepository("test.txt");
         // foreach (string line in testRepositoryService.GetLevelLines(1))
@@ -31,9 +31,10 @@ public class Program
 
         // GeneratorController.Generate();
     }
+
     static void TestAlgorhithm()
     {
-        string errorMaps = "errorMaps.txt";
+        string errorMaps = "errorMaps " + DateTime.Now.ToString("yyyyMMddHHmm") + ".txt";
         string[] textFiles = new string[5] { "generatedMaps202410161303.txt", "generatedMaps202410162201.txt", "generatedMaps202410162208.txt", "generatedMaps202410172131.txt", "test.txt" };
         foreach (string file in textFiles)
         {
@@ -51,17 +52,20 @@ public class Program
                 // Console.WriteLine(solved);
                 if (!solved)
                 {
-                    // Console.WriteLine(repositoryService.pointers.Length);
+                    Console.WriteLine(repositoryService.pointers.Length);
                     File.AppendAllLines(errorMaps, repositoryService.GetLevelLines(i));
                     File.AppendAllLines(errorMaps, new string[1] { "" });
                     foreach (string line in repositoryService.GetLevelLines(i))
                     {
                         Console.WriteLine(line);
                     }
+                    Console.WriteLine("Could not solve " + i);
+                    // throw new System.Exception("Could not solve " + i);
                 }
             }
         }
     }
+
     static void TestSpecificMap(string file, int mapNumber)
     {
         RepositoryService repositoryService = new RepositoryService();
