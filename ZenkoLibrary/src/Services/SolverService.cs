@@ -5,6 +5,7 @@ using Zenko;
 using Zenko.Utilities;
 using Zenko.Controllers;
 using System.Linq;
+using System;
 
 namespace Zenko.Services
 {
@@ -35,7 +36,7 @@ namespace Zenko.Services
 
             while (activeGameStates.Count > 0)
             {
-                Logger.Log(activeGameStates.Count + " " + exploredGameStates.Count);
+                // Logger.Log(activeGameStates.Count + " " + exploredGameStates.Count);
                 List<TileSetStateHolder> validGameStates = new List<TileSetStateHolder>();
 
                 foreach (TileSetStateHolder currentGameState in activeGameStates)
@@ -77,6 +78,7 @@ namespace Zenko.Services
 
                             if (DEBUG)
                             {
+                                // Logger.Log(targetPosition.ToString());
                                 foreach (BoardAction boardAction in boardActions)
                                 {
                                     Logger.Log(boardAction.ToString());
@@ -91,28 +93,34 @@ namespace Zenko.Services
                                 if (DEBUG) Logger.Log("Seed on " + targetPosition);
                                 newTileSet = newTileSet.Clone();
 
-                                //Try to get an exiting tileset
-                                newTileSet.modifiedPositions.Add(targetPosition);
-                                newTileSet.modifiedPositions.OrderBy(x => x.x).ThenBy(x => x.y).ThenBy(x => x.z).ToList();
-                                foreach (KeyValuePair<TileSet, Dictionary<V2Int, bool>> entry in exploredGameStates)
-                                {
-                                    bool same = true;
-                                    if (entry.Key.modifiedPositions.Count != newTileSet.modifiedPositions.Count)
-                                    {
-                                        continue;
-                                    }
-                                    for (int i = 0; i < newTileSet.modifiedPositions.Count; i++)
-                                    {
-                                        if (entry.Key.modifiedPositions[i].CompareTo(newTileSet.modifiedPositions[i]) != 0)
-                                        {
-                                            continue;
-                                        }
-                                    }
-                                    newTileSet = entry.Key;
-                                    break;
-                                }
+                                // //Try to get an exiting tileset
+                                // newTileSet.modifiedPositions.Add(targetPosition);
+                                // newTileSet.modifiedPositions = newTileSet.modifiedPositions.OrderBy(x => x.x).ThenBy(x => x.y).ThenBy(x => x.z).ToList();
+                                // foreach (KeyValuePair<TileSet, Dictionary<V2Int, bool>> entry in exploredGameStates)
+                                // {
+                                //     bool same = true;
+                                //     if (entry.Key.modifiedPositions.Count != newTileSet.modifiedPositions.Count)
+                                //     {
+                                //         continue;
+                                //     }
+                                //     for (int i = 0; i < newTileSet.modifiedPositions.Count; i++)
+                                //     {
+                                //         if (entry.Key.modifiedPositions[i].CompareTo(newTileSet.modifiedPositions[i]) != 0)
+                                //         {
+                                //             continue;
+                                //         }
+                                //     }
+                                //     entry.Key.SetTile(targetPosition.ToModelCoordinates(), newTileSet.GetTile(targetPosition.ToModelCoordinates()));
+                                //     newTileSet = entry.Key;
+                                //     newTileSet.SetPlayerPosition(targetPosition.ToModelCoordinates());
+                                //     Console.WriteLine("HI " + newTileSet.GetTile(targetPosition.ToModelCoordinates()).GetTileType());
+                                //     if (targetPosition == new V3(3, 0, -1))
+                                //     {
+                                //         Console.WriteLine("ON IT " + currentDirection.ToModelCoordinates());
+                                //     }
+                                //     break;
+                                // }
                                 newGameState.tileSet = newTileSet;
-
                             }
 
                             traveling = MapController.ModelTakeBoardAction(newTileSet, targetPosition, boardActions, ref currentDirection);
@@ -145,7 +153,7 @@ namespace Zenko.Services
 
                         if (startPosition != newGameState.playerPosition)
                         {
-                            if (DEBUG) Logger.Log("Player at " + startPosition + " going " + direction.ToModelCoordinates() + " ended at " + newTileSet.GetPlayerPosition());
+                            if (DEBUG) Logger.Log("Player at " + startPosition.ToString() + " going " + direction.ToModelCoordinates().ToString() + " ended at " + newTileSet.GetPlayerPosition().ToString());
                             if (newTileSet.GetPlayerPosition() != newGameState.playerPosition)
                             {
                                 Logger.LogError("PLAYER MISMATCH " + newTileSet.GetPlayerPosition() + " " + newGameState.playerPosition);
