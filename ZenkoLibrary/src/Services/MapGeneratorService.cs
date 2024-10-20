@@ -51,7 +51,7 @@ namespace Zenko.Services
                     string log = "";
                     log += "attempting ";
                     TileSet tileSet = TileSetFactory.TileSet(levelSettings);
-                    if (SolutionController.TrySolveWithPiecesNew(tileSet, levelSettings.GeneratePieceTypes().ToArray(), out Solution solution))
+                    if (SolutionController.TrySolveWithPiecesNew(tileSet, levelSettings.GeneratePieceTypes().ToArray(), out Solution solution, 1))
                     {
                         // log += ", Found with turns: " + solution.GetTurns();
                         //TODO: Conditions

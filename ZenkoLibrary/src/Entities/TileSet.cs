@@ -19,6 +19,8 @@ namespace Zenko.Entities
         protected V2Int goalPosition;
         protected V2Int playerPosition;
 
+        public List<V3> modifiedPositions = new List<V3>();
+
 
         ////////////////////////
         //  BOARD PROPERTIES  //

@@ -1,8 +1,6 @@
 using System.Collections.Generic;
 using Zenko.Controllers;
 using Zenko.Utilities;
-using Zenko.Entities;
-using Zenko;
 
 namespace Zenko.Entities
 {
