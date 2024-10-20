@@ -12,7 +12,7 @@ namespace Zenko.Entities
         //      PROPERTIES     //
         /////////////////////////
 
-
+        bool logError = false;
         TileSet tileSet;
         V2Int playerPosition;
         int turns;
@@ -86,7 +86,7 @@ namespace Zenko.Entities
                     counter++;
                     if (counter > 20)
                     {
-                        Logger.LogError("Probably stuck in an infinite loop");
+                        if (logError) Logger.LogError("Probably stuck in an infinite loop");
                         moving = false;
                         //this means it will be filtered out in SolutionController
                         //could use a different way..
