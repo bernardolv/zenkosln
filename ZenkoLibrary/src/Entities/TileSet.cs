@@ -130,6 +130,10 @@ namespace Zenko.Entities
                 tile.SetIsTaken(true);
             }
         }
+        public void SetTile(V2Int position, Tile tile)
+        {
+            tiles[position.x, position.y] = tile.Clone();
+        }
         public void SetTiles(Tile[,] tiles)
         {
             this.tiles = tiles;

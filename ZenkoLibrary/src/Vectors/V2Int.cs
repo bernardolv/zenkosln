@@ -345,4 +345,9 @@ public struct V2Int : IEquatable<V2Int>
     {
         return x.GetHashCode() ^ (y.GetHashCode() << 2);
     }
+
+    public string ToString()
+    {
+        return x.ToString() + "," + y.ToString();
+    }
 }

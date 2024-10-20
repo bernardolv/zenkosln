@@ -365,6 +365,6 @@ public struct V3 : IEquatable<V3>, IComparable<V3>
 
     public string ToString()
     {
-        return (x + 1).ToString() + (y + 1).ToString() + (z + 1).ToString();
+        return x.ToString() + "," + y.ToString() + "," + z.ToString();
     }
 }

@@ -277,9 +277,10 @@ namespace Zenko.Controllers
             TileSet board = tileSet.Clone();
             foreach (Piece piece in pieces)
             {
-                TileSetController.PlacePiece(tileSet, piece);
+                TileSetController.PlacePiece(board, piece);
             }
-            if (TrySolveBoard(board, out Solution newSolution))
+            SolverService solverService = new SolverService();
+            if (solverService.TrySolveBoardGeneral(board, out Solution newSolution))
             {
                 if (solution.GetTurns() == 0 || newSolution.GetTurns() < solution.GetTurns())
                 {
