@@ -12,8 +12,8 @@ public class Program
 {
     public static void Main()
     {
-        // TestAlgorhithm();
-        TestSpecificMap("test.txt", 711);
+        TestAlgorhithm();
+        // TestSpecificMap("test.txt", 711);
         // RepositoryService testRepositoryService = new RepositoryService();
         // testRepositoryService.InitializeRepository("test.txt");
         // foreach (string line in testRepositoryService.GetLevelLines(1))

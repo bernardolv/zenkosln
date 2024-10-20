@@ -128,28 +128,17 @@ namespace Zenko.Controllers
                             found = true;
                         }
                     }
-                    // else if (method == 2)
-                    // {
-                    //     if (solverService.TrySolveBoardNew4(tileSetToTest, out Solution newSolution))
-                    //     {
-                    //         if (solution == null || newSolution.GetTurns() < solution.GetTurns())
-                    //         {
-                    //             solution = newSolution.Clone();
-                    //         }
-                    //         found = true;
-                    //     }
-                    // }
-                    // else if (method == 3)
-                    // {
-                    //     if (solverService.TrySolveBoardNew5(tileSetToTest, out Solution newSolution))
-                    //     {
-                    //         if (solution == null || newSolution.GetTurns() < solution.GetTurns())
-                    //         {
-                    //             solution = newSolution.Clone();
-                    //         }
-                    //         found = true;
-                    //     }
-                    // }
+                    else if (method == 2)
+                    {
+                        if (solverService.TrySolveBoardGeneral2(tileSetToTest, out Solution newSolution))
+                        {
+                            if (solution == null || newSolution.GetTurns() < solution.GetTurns())
+                            {
+                                solution = newSolution.Clone();
+                            }
+                            found = true;
+                        }
+                    }
 
                 }
                 if (found)

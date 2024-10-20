@@ -350,4 +350,17 @@ public struct V2Int : IEquatable<V2Int>
     {
         return x.ToString() + "," + y.ToString();
     }
+
+    public int CompareTo(V2Int other)
+    {
+        if (x != other.x)
+        {
+            return x < other.x ? -1 : 1;
+        }
+        if (y != other.y)
+        {
+            return y < other.y ? -1 : 1;
+        }
+        return 0;
+    }
 }
