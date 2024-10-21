@@ -98,35 +98,35 @@ namespace Zenko.Services
                                 if (DEBUG) Logger.Log("Seed on " + targetPosition.ToString());
                                 newTileSet = newTileSet.Clone();
 
-                                // //Try to get an exiting tileset
-                                // newTileSet.modifiedPositions.Add(targetPosition);
-                                // newTileSet.modifiedPositions = newTileSet.modifiedPositions.OrderBy(x => x.x).ThenBy(x => x.y).ThenBy(x => x.z).ToList();
-                                // foreach (KeyValuePair<TileSet, Dictionary<V2Int, bool>> entry in exploredGameStates)
-                                // {
-                                //     bool same = true;
-                                //     if (entry.Key.modifiedPositions.Count != newTileSet.modifiedPositions.Count)
-                                //     {
-                                //         continue;
-                                //     }
-                                //     for (int i = 0; i < newTileSet.modifiedPositions.Count; i++)
-                                //     {
-                                //         if (entry.Key.modifiedPositions[i].CompareTo(newTileSet.modifiedPositions[i]) != 0)
-                                //         {
-                                //             same = false;
-                                //             break;
-                                //         }
-                                //     }
-                                //     if (!same)
-                                //     {
-                                //         continue;
-                                //     }
-                                //     if (DEBUG) Console.WriteLine("HI " + newTileSet.GetTile(targetPosition.ToModelCoordinates()).GetTileType());
-                                //     entry.Key.SetTile(targetPosition.ToModelCoordinates(), newTileSet.GetTile(targetPosition.ToModelCoordinates()));
-                                //     newTileSet = entry.Key;
-                                //     newTileSet.SetPlayerPosition(targetPosition.ToModelCoordinates());
-                                //     if (DEBUG) Console.WriteLine("HI " + newTileSet.GetTile(targetPosition.ToModelCoordinates()).GetTileType());
-                                //     break;
-                                // }
+                                //Try to get an exiting tileset
+                                newTileSet.modifiedPositions.Add(targetPosition);
+                                newTileSet.modifiedPositions = newTileSet.modifiedPositions.OrderBy(x => x.x).ThenBy(x => x.y).ThenBy(x => x.z).ToList();
+                                foreach (KeyValuePair<TileSet, Dictionary<V2Int, bool>> entry in exploredGameStates)
+                                {
+                                    bool same = true;
+                                    if (entry.Key.modifiedPositions.Count != newTileSet.modifiedPositions.Count)
+                                    {
+                                        continue;
+                                    }
+                                    for (int i = 0; i < newTileSet.modifiedPositions.Count; i++)
+                                    {
+                                        if (entry.Key.modifiedPositions[i].CompareTo(newTileSet.modifiedPositions[i]) != 0)
+                                        {
+                                            same = false;
+                                            break;
+                                        }
+                                    }
+                                    if (!same)
+                                    {
+                                        continue;
+                                    }
+                                    if (DEBUG) Console.WriteLine("HI " + newTileSet.GetTile(targetPosition.ToModelCoordinates()).GetTileType());
+                                    entry.Key.SetTile(targetPosition.ToModelCoordinates(), newTileSet.GetTile(targetPosition.ToModelCoordinates()));
+                                    newTileSet = entry.Key;
+                                    newTileSet.SetPlayerPosition(targetPosition.ToModelCoordinates());
+                                    if (DEBUG) Console.WriteLine("HI " + newTileSet.GetTile(targetPosition.ToModelCoordinates()).GetTileType());
+                                    break;
+                                }
                                 newGameState.tileSet = newTileSet;
                             }
 

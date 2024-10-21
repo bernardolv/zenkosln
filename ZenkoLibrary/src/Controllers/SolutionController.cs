@@ -269,7 +269,7 @@ namespace Zenko.Controllers
                 TileSetController.PlacePiece(board, piece);
             }
             SolverService solverService = new SolverService();
-            if (solverService.TrySolveBoardGeneral2(board, out Solution newSolution))
+            if (solverService.TrySolveBoardGeneral(board, out Solution newSolution))
             {
                 if (solution.GetTurns() == 0 || newSolution.GetTurns() < solution.GetTurns())
                 {

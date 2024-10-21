@@ -68,6 +68,7 @@ namespace Zenko.Entities
                 clone.placedPieces.Add(piece.Clone());
             }
             clone.SetPlacedPiecePositions(new List<V2Int>(GetPlacedPiecePositions()));
+            clone.modifiedPositions = new List<V3>(modifiedPositions);
             return clone;
         }
 

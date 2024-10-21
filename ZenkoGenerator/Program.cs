@@ -14,8 +14,8 @@ public class Program
     public static void Main()
     {
         // TestAlgorhithmSpeeds();
-        // TestAlgorhithm();
-        TestSpecificMap("test.txt", 1);
+        // TestAlgorhithm(1);
+        // TestSpecificMap("test.txt", 1);
         // RepositoryService testRepositoryService = new RepositoryService();
         // testRepositoryService.InitializeRepository("test.txt");
         // foreach (string line in testRepositoryService.GetLevelLines(1))
@@ -31,7 +31,7 @@ public class Program
         //Select x map from text file
         //Run Solver Strategy while logging the active map count
 
-        // GeneratorController.Generate();
+        GeneratorController.Generate();
     }
 
 
@@ -52,19 +52,19 @@ public class Program
                 Map map = repositoryService.GetMap(i);
 
                 bool solved = SolutionController.TrySolveWithPiecesNew(map.GetTileSet(), map.GetPieceTypes(), out Solution solution, algorhithmNumber);
-                // // Console.WriteLine(solved);
-                // if (!solved)
-                // {
-                //     Console.WriteLine(repositoryService.pointers.Length);
-                //     File.AppendAllLines(errorMaps, repositoryService.GetLevelLines(i));
-                //     File.AppendAllLines(errorMaps, new string[1] { "" });
-                //     foreach (string line in repositoryService.GetLevelLines(i))
-                //     {
-                //         Console.WriteLine(line);
-                //     }
-                //     Console.WriteLine("Could not solve " + i);
-                //     // throw new System.Exception("Could not solve " + i);
-                // }
+                // Console.WriteLine(solved);
+                if (!solved)
+                {
+                    Console.WriteLine(repositoryService.pointers.Length);
+                    File.AppendAllLines(errorMaps, repositoryService.GetLevelLines(i));
+                    File.AppendAllLines(errorMaps, new string[1] { "" });
+                    foreach (string line in repositoryService.GetLevelLines(i))
+                    {
+                        Console.WriteLine(line);
+                    }
+                    Console.WriteLine("Could not solve " + i);
+                    // throw new System.Exception("Could not solve " + i);
+                }
             }
         }
     }
