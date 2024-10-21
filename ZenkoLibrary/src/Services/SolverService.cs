@@ -15,6 +15,11 @@ namespace Zenko.Services
     //Old move (solutionbot.move) vs new move (tilesetutilities.getnextaction && mapcontroller.move)
     //get new states first then iterate over them and do logic vs do logic as it iterates (maybe a dots thing helps? i dont think so)
     //try to get existing new state by looking through the active ones...
+
+
+
+    //Solver 1 is faster but has a memory leak due to not detecting repeated tilesets when grabbing a fragile/seed
+    //Solver 2 should have no memory leak but somehow is still slower than 1, probably not so much in cases with many fragiles/seeds
     public class SolverService
     {
         const bool DEBUG = false;
@@ -216,8 +221,8 @@ namespace Zenko.Services
             originalGameStateHolder.playerPosition = tileSet.GetPlayerPosition();
 
             //Turn to dictionary eventually
-            List<GameStateHolder> exploredGameStates = new List<GameStateHolder>();
-            exploredGameStates.Add(originalGameStateHolder);
+            Dictionary<List<V2Int>, Dictionary<V2Int, bool>> exploredGameStates = new Dictionary<List<V2Int>, Dictionary<V2Int, bool>>();
+            exploredGameStates.Add(originalGameStateHolder.modifiedTiles, new Dictionary<V2Int, bool>() { { originalGameStateHolder.playerPosition, true } });
 
             List<GameStateHolder> activeGameStates = new List<GameStateHolder>();
             activeGameStates.Add(originalGameStateHolder);
@@ -309,16 +314,16 @@ namespace Zenko.Services
                                 newGameState.modifiedTiles = newGameState.modifiedTiles.OrderBy(x => x.x).ThenBy(x => x.y).ToList();
 
                                 //Grab existing modifiedTiles if someone else already visitted:
-                                foreach (GameStateHolder gameStateHolder in exploredGameStates)
+                                foreach (KeyValuePair<List<V2Int>, Dictionary<V2Int, bool>> entry in exploredGameStates)
                                 {
                                     bool same = true;
-                                    if (gameStateHolder.modifiedTiles.Count != newGameState.modifiedTiles.Count)
+                                    if (entry.Key.Count != newGameState.modifiedTiles.Count)
                                     {
                                         continue;
                                     }
-                                    for (int i = 0; i < gameStateHolder.modifiedTiles.Count; i++)
+                                    for (int i = 0; i < entry.Key.Count; i++)
                                     {
-                                        if (gameStateHolder.modifiedTiles[i].CompareTo(newGameState.modifiedTiles[i]) != 0)
+                                        if (entry.Key[i].CompareTo(newGameState.modifiedTiles[i]) != 0)
                                         {
                                             same = false;
                                             break;
@@ -328,7 +333,7 @@ namespace Zenko.Services
                                     {
                                         continue;
                                     }
-                                    newGameState.modifiedTiles = gameStateHolder.modifiedTiles;
+                                    newGameState.modifiedTiles = entry.Key;
                                 }
                             }
 
@@ -377,23 +382,21 @@ namespace Zenko.Services
                             continue;
                         }
 
-                        bool explored = false;
-                        foreach (GameStateHolder exploredState in exploredGameStates)
+                        //Check if state has been explored
+                        if (exploredGameStates.ContainsKey(newGameState.modifiedTiles) && exploredGameStates[newGameState.modifiedTiles].ContainsKey(newGameState.playerPosition))
                         {
-                            if (newGameState.modifiedTiles == exploredState.modifiedTiles && newGameState.playerPosition == exploredState.playerPosition)
-                            {
-                                explored = true;
-                                break;
-                            }
-                        }
-
-                        if (explored)
-                        {
+                            if (DEBUG) Logger.Log("Explored state exists");
                             continue;
                         }
 
-                        exploredGameStates.Add(newGameState);
+                        //Add explored state
+                        if (!exploredGameStates.ContainsKey(newGameState.modifiedTiles))
+                        {
+                            exploredGameStates.Add(newGameState.modifiedTiles, new Dictionary<V2Int, bool>());
+                        }
+                        exploredGameStates[newGameState.modifiedTiles].Add(newGameState.playerPosition, true);
 
+                        //Check for win state
                         if (newTileSet.GetPlayerPosition() == newTileSet.GetGoalPosition())
                         {
                             // Logger.Log("found" + totalStates);
