@@ -19,7 +19,7 @@ namespace Zenko.Entities
         // OBJECT RELATIONSHIP //
         /////////////////////////
 
-        Piece[] pieces;
+        Piece[] pieces = new Piece[0];
 
 
         /////////////////////////

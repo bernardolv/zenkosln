@@ -4,11 +4,13 @@ using Zenko.Controllers;
 using Zenko.Entities;
 using Zenko;
 using Zenko.Factories;
+using System.Diagnostics;
 
 namespace Zenko.Services
 {
     public class MapGeneratorService
     {
+        const bool DEBUG = true;
         int intervalToPrint = 0;
         int attempts;
         LevelSettings levelSettings;
@@ -51,6 +53,24 @@ namespace Zenko.Services
                     string log = "";
                     log += "attempting ";
                     TileSet tileSet = TileSetFactory.TileSet(levelSettings);
+                    PieceType[] pieceTypes = levelSettings.GeneratePieceTypes().ToArray();
+
+                    //Print map to test
+                    if (DEBUG)
+                    {
+                        string pieces = "";
+                        foreach (PieceType pieceType in pieceTypes)
+                        {
+                            pieces += pieceType.ToString() + ",";
+                        }
+                        Logger.Log(pieces.Remove(pieces.Length - 1));
+
+                        foreach (string line in MapService.ConvertToStringArray(MapFactory.Map(tileSet, new Solution())))
+                        {
+                            Logger.Log(line);
+                        }
+                    }
+
                     if (SolutionController.TrySolveWithPiecesNew(tileSet, levelSettings.GeneratePieceTypes().ToArray(), out Solution solution, 2))
                     {
                         // log += ", Found with turns: " + solution.GetTurns();
