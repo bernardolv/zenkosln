@@ -141,16 +141,7 @@ namespace Zenko.Utilities
                 case "Wall":
                     return false;
                 case "Portal":
-                    Piece nextTilePortal = tileSet.GetPieceAt(matchingPortal.GetPosition() + matchingPortal.GetIdentifierDirectionVector());
-                    //TODO: Find portal piece at nextTile
-                    //TODO: Need to add Tile.Piece
-                    if (matchingPortal.GetIdentifierDirectionVector() == -nextTilePortal.GetIdentifierDirectionVector())
-                    {
-                        //Logger.LogError("CAREFUL, POTENTIAL INFINITY");
-                        return false;
-                    }
-                    else
-                        return true;
+                    return false;
                 case "Start":
                     return false;
                 default:
