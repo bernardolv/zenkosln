@@ -7,6 +7,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ZenkoLibrary", "ZenkoLibrar
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ZenkoGenerator", "ZenkoGenerator\ZenkoGenerator.csproj", "{A2FBC88E-1CE1-42B3-ACB5-48B702081A34}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GeneratorTest", "GeneratorTest\GeneratorTest.csproj", "{00126636-C3F9-4113-9248-5C66B08B1102}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -24,5 +26,9 @@ Global
 		{A2FBC88E-1CE1-42B3-ACB5-48B702081A34}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A2FBC88E-1CE1-42B3-ACB5-48B702081A34}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A2FBC88E-1CE1-42B3-ACB5-48B702081A34}.Release|Any CPU.Build.0 = Release|Any CPU
+		{00126636-C3F9-4113-9248-5C66B08B1102}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{00126636-C3F9-4113-9248-5C66B08B1102}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{00126636-C3F9-4113-9248-5C66B08B1102}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{00126636-C3F9-4113-9248-5C66B08B1102}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

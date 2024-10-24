@@ -15,7 +15,7 @@ public class Program
     {
         // TestAlgorhithmSpeeds();
         // TestAlgorhithm(1);
-        // TestSpecificMap("test.txt", 1);
+        TestSpecificMap("processkiller.txt", 1);
         // RepositoryService testRepositoryService = new RepositoryService();
         // testRepositoryService.InitializeRepository("test.txt");
         // foreach (string line in testRepositoryService.GetLevelLines(1))
@@ -31,7 +31,7 @@ public class Program
         //Select x map from text file
         //Run Solver Strategy while logging the active map count
 
-        GeneratorController.Generate();
+        // GeneratorController.Generate();
     }
 
 
@@ -80,7 +80,7 @@ public class Program
         //     Logger.Log(piece.GetIdentifier() + piece.GetPosition().ToString());
         // }
 
-        bool solved = SolutionController.TrySpecificSolution(map.GetTileSet(), map.GetSolution().GetPieces(), out Solution solution);
+        bool solved = SolutionController.TrySolveWithPiecesNew(map.GetTileSet(), map.GetPieceTypes(), out Solution solution, 1);
         Console.WriteLine(solved);
         if (!solved)
         {

@@ -71,7 +71,7 @@ namespace Zenko.Services
                         }
                     }
 
-                    if (SolutionController.TrySolveWithPiecesNew(tileSet, levelSettings.GeneratePieceTypes().ToArray(), out Solution solution, 2))
+                    if (SolutionController.TrySolveWithPiecesNew(tileSet, levelSettings.GeneratePieceTypes().ToArray(), out Solution solution, 1))
                     {
                         // log += ", Found with turns: " + solution.GetTurns();
                         //TODO: Conditions
