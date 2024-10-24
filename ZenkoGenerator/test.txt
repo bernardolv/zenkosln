@@ -1,4 +1,3 @@
-DownSeed,RightSeed,RightSeed,UpSeed
 Map8
 1 1 1 1 1 1 1 1
 G 1 0 0 0 0 0 1

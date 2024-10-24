@@ -15,7 +15,7 @@ public class Program
     {
         // TestAlgorhithmSpeeds();
         // TestAlgorhithm(1);
-        TestSpecificMap("processkiller.txt", 1);
+        // TestSpecificMap("processkiller.txt", 1);
         // RepositoryService testRepositoryService = new RepositoryService();
         // testRepositoryService.InitializeRepository("test.txt");
         // foreach (string line in testRepositoryService.GetLevelLines(1))
@@ -31,7 +31,7 @@ public class Program
         //Select x map from text file
         //Run Solver Strategy while logging the active map count
 
-        // GeneratorController.Generate();
+        GeneratorController.Generate();
     }
 
 

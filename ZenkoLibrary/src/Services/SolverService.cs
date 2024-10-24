@@ -38,10 +38,10 @@ namespace Zenko.Services
 
             List<TileSetStateHolder> activeGameStates = new List<TileSetStateHolder>();
             activeGameStates.Add(originalTileSetStateHolder);
-            Logger.Log("NEW");
+            // Logger.Log("NEW");
             while (activeGameStates.Count > 0)
             {
-                Logger.Log(activeGameStates.Count + " " + exploredGameStates.Count);
+                // Logger.Log(activeGameStates.Count + " " + exploredGameStates.Count);
                 List<TileSetStateHolder> validGameStates = new List<TileSetStateHolder>();
 
                 foreach (TileSetStateHolder currentGameState in activeGameStates)

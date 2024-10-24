@@ -2,6 +2,17 @@ using System.Collections.Generic;
 using Zenko.Entities;
 using System.Linq;
 
+public struct Combo
+{
+    public List<V2Int> positions;
+    public List<string> pieceTypes;
+    public Combo(List<V2Int> positions, List<string> pieceTypes)
+    {
+        this.positions = positions;
+        this.pieceTypes = pieceTypes;
+    }
+}
+
 namespace Zenko.Utilities
 {
     public static class SolverUtilities
@@ -217,6 +228,213 @@ namespace Zenko.Utilities
                                     combo.Add(candidatePositions[k], Zenko.Presets.PieceType.mapByType[pieceTypeCombo[2].ToString()]);
                                     combo.Add(candidatePositions[l], Zenko.Presets.PieceType.mapByType[pieceTypeCombo[3].ToString()]);
                                     result.Add(combo);
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+
+            return result;
+        }
+
+
+        /// TODO: Test struct{Listv2int Liststring} vs Dictionary memory
+        //TODO: Test struct{litv2int liststring} vs list<struct{v2int string}>
+        public static List<Combo> Test(PieceType[] pieceTypes, TileSet tileSet, int piecesAmount)
+        {
+            List<Combo> result = new List<Combo>();
+            if (piecesAmount == 0)
+            {
+                result.Add(new Combo(new List<V2Int>(), new List<string>()));
+                return result;
+            }
+
+            if (piecesAmount == 1)
+            {
+                List<V2Int> candidatePositions = TileSetUtilities.GetCandidateTilePositions(tileSet);
+                PieceType[] uniquePieceTypes = pieceTypes.Distinct().ToArray();
+                foreach (PieceType pieceType in uniquePieceTypes)
+                {
+                    foreach (V2Int icePosition in TileSetUtilities.GetCandidateTilePositions(tileSet))
+                    {
+                        result.Add(new Combo(new List<V2Int>() { icePosition }, new List<string> { Zenko.Presets.PieceType.mapByType[pieceType.ToString()] }));
+                    }
+                }
+            }
+
+            if (piecesAmount == 2)
+            {
+                List<V2Int> candidatePositions = TileSetUtilities.GetCandidateTilePositions(tileSet);
+                List<List<PieceType>> pieceTypeCombos = GetPossiblePieceCombinations(pieceTypes, 2);
+                foreach (List<PieceType> pieceTypeCombo in pieceTypeCombos)
+                {
+                    for (int i = 0; i < candidatePositions.Count; i++)
+                    {
+                        //if piece is same as previous, start higher up to avoid repeat maps
+                        int j = 0;
+                        if (pieceTypeCombo[0] == pieceTypeCombo[1])
+                        {
+                            j = i + 1;
+                        }
+
+                        for (; j < candidatePositions.Count; j++)
+                        {
+                            //this happens when pieces are not the same type
+                            //otherwise it doesnt since j = i+1 so it would be out of scope when i+1 = candidatePositions.Count (last i iteration)
+                            if (i == j)
+                            {
+                                continue;
+                            }
+
+                            List<V2Int> positionsList = new List<V2Int>() { candidatePositions[i], candidatePositions[j] };
+                            List<string> pieceTypeList = new List<string>() { Zenko.Presets.PieceType.mapByType[pieceTypeCombo[0].ToString()], Zenko.Presets.PieceType.mapByType[pieceTypeCombo[1].ToString()] };
+
+                            result.Add(new Combo(positionsList, pieceTypeList));
+                        }
+                    }
+                }
+            }
+
+            if (piecesAmount == 3)
+            {
+                List<V2Int> candidatePositions = TileSetUtilities.GetCandidateTilePositions(tileSet);
+                List<List<PieceType>> pieceTypeCombos = GetPossiblePieceCombinations(pieceTypes, 3);
+                foreach (List<PieceType> pieceTypeCombo in pieceTypeCombos)
+                {
+                    for (int i = 0; i < candidatePositions.Count; i++)
+                    {
+                        //if piece is same as previous, start higher up to avoid repeat maps
+                        int j = 0;
+                        if (pieceTypeCombo[0] == pieceTypeCombo[1])
+                        {
+                            j = i + 1;
+                        }
+
+                        for (; j < candidatePositions.Count; j++)
+                        {
+                            //this happens when pieces are not the same type
+                            //otherwise it doesnt since j = i+1 so it would be out of scope when i+1 = candidatePositions.Count (last i iteration)
+                            if (i == j)
+                            {
+                                continue;
+                            }
+
+                            //if piece is same as previous, start higher up to avoid repeat maps
+                            int k = 0;
+                            if (pieceTypeCombo[1] == pieceTypeCombo[2])
+                            {
+                                k = j + 1;
+                            }
+
+                            for (; k < candidatePositions.Count; k++)
+                            {
+                                //this happens when pieces are not the same type
+                                //otherwise it doesnt since j = i+1 so it would be out of scope when i+1 = candidatePositions.Count (last i iteration)
+                                if (j == k)
+                                {
+                                    continue;
+                                }
+
+                                //this happens when pieces are not the same type
+                                //otherwise it doesnt since j = i+1 so it would be out of scope when i+1 = candidatePositions.Count (last i iteration)
+                                if (i == k)
+                                {
+                                    continue;
+                                }
+
+                                List<V2Int> positionsList = new List<V2Int>() { candidatePositions[i], candidatePositions[j], candidatePositions[k] };
+                                List<string> pieceTypeList = new List<string>() { Zenko.Presets.PieceType.mapByType[pieceTypeCombo[0].ToString()], Zenko.Presets.PieceType.mapByType[pieceTypeCombo[1].ToString()], Zenko.Presets.PieceType.mapByType[pieceTypeCombo[2].ToString()] };
+                                result.Add(new Combo(positionsList, pieceTypeList));
+                            }
+                        }
+                    }
+                }
+            }
+
+            if (piecesAmount == 4)
+            {
+                List<V2Int> candidatePositions = TileSetUtilities.GetCandidateTilePositions(tileSet);
+                List<List<PieceType>> pieceTypeCombos = GetPossiblePieceCombinations(pieceTypes, 4);
+                foreach (List<PieceType> pieceTypeCombo in pieceTypeCombos)
+                {
+                    for (int i = 0; i < candidatePositions.Count; i++)
+                    {
+                        //if piece is same as previous, start higher up to avoid repeat maps
+                        int j = 0;
+                        if (pieceTypeCombo[0] == pieceTypeCombo[1])
+                        {
+                            j = i + 1;
+                        }
+
+                        for (; j < candidatePositions.Count; j++)
+                        {
+                            //this happens when pieces are not the same type
+                            //otherwise it doesnt since j = i+1 so it would be out of scope when i+1 = candidatePositions.Count (last i iteration)
+                            if (i == j)
+                            {
+                                continue;
+                            }
+
+                            //if piece is same as previous, start higher up to avoid repeat maps
+                            int k = 0;
+                            if (pieceTypeCombo[1] == pieceTypeCombo[2])
+                            {
+                                k = j + 1;
+                            }
+
+                            for (; k < candidatePositions.Count; k++)
+                            {
+
+                                //this happens when pieces are not the same type
+                                //otherwise it doesnt since j = i+1 so it would be out of scope when i+1 = candidatePositions.Count (last i iteration)
+                                if (j == k)
+                                {
+                                    continue;
+                                }
+
+                                //this happens when pieces are not the same type
+                                //otherwise it doesnt since j = i+1 so it would be out of scope when i+1 = candidatePositions.Count (last i iteration)
+                                if (i == k)
+                                {
+                                    continue;
+                                }
+
+                                //if piece is same as previous, start higher up to avoid repeat maps
+                                int l = 0;
+                                if (pieceTypeCombo[2] == pieceTypeCombo[3])
+                                {
+                                    l = k + 1;
+                                }
+
+                                for (; l < candidatePositions.Count; l++)
+                                {
+
+                                    //this happens when pieces are not the same type
+                                    //otherwise it doesnt since j = i+1 so it would be out of scope when i+1 = candidatePositions.Count (last i iteration)
+                                    if (i == l)
+                                    {
+                                        continue;
+                                    }
+
+                                    //this happens when pieces are not the same type
+                                    //otherwise it doesnt since j = i+1 so it would be out of scope when i+1 = candidatePositions.Count (last i iteration)
+                                    if (j == l)
+                                    {
+                                        continue;
+                                    }
+
+                                    //this happens when pieces are not the same type
+                                    //otherwise it doesnt since j = i+1 so it would be out of scope when i+1 = candidatePositions.Count (last i iteration)
+                                    if (k == l)
+                                    {
+                                        continue;
+                                    }
+
+
+                                    List<V2Int> positionsList = new List<V2Int>() { candidatePositions[i], candidatePositions[j], candidatePositions[k], candidatePositions[l] };
+                                    List<string> pieceTypeList = new List<string>() { Zenko.Presets.PieceType.mapByType[pieceTypeCombo[0].ToString()], Zenko.Presets.PieceType.mapByType[pieceTypeCombo[1].ToString()], Zenko.Presets.PieceType.mapByType[pieceTypeCombo[2].ToString()], Zenko.Presets.PieceType.mapByType[pieceTypeCombo[3].ToString()] };
+                                    result.Add(new Combo(positionsList, pieceTypeList));
                                 }
                             }
                         }
