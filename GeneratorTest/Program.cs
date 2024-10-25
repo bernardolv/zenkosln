@@ -23,7 +23,44 @@ public class Program
         // Console.WriteLine(GC.GetTotalMemory(true));
         // PieceComboMemory("processkiller.txt", 1, 0);
         // TestComboModesAreEqual("processkiller.txt", 1);
-        TestComboService("processkiller.txt", 1);
+        // TestComboService("processkiller.txt", 1);
+        // TestComboServiceMemory("processkiller.txt", 1);
+        TestRegularComboMemory("processkiller.txt", 1);
+    }
+
+    static void TestRegularComboMemory(string file, int mapNumber)
+    {
+        RepositoryService repositoryService = new RepositoryService();
+        repositoryService.InitializeRepository(file);
+        Map map = repositoryService.GetMap(mapNumber);
+
+        Console.WriteLine(GC.GetTotalAllocatedBytes());
+        Console.WriteLine(GC.GetTotalMemory(true));
+
+        List<Combo> combos = SolverUtilities.Test(map.GetPieceTypes(), map.GetTileSet(), 4);
+
+
+        Console.WriteLine(GC.GetTotalAllocatedBytes());
+        Console.WriteLine(GC.GetTotalMemory(true));
+    }
+
+    static void TestComboServiceMemory(string file, int mapNumber)
+    {
+        RepositoryService repositoryService = new RepositoryService();
+        repositoryService.InitializeRepository(file);
+        Map map = repositoryService.GetMap(mapNumber);
+
+        Console.WriteLine(GC.GetTotalAllocatedBytes());
+        Console.WriteLine(GC.GetTotalMemory(true));
+
+        ComboService comboService = new ComboService(map, 4);
+        while (comboService.TryNextRecursive(3, out Combo combo))
+        {
+
+        }
+
+        Console.WriteLine(GC.GetTotalAllocatedBytes());
+        Console.WriteLine(GC.GetTotalMemory(true));
     }
 
     static void TestComboService(string file, int mapNumber)

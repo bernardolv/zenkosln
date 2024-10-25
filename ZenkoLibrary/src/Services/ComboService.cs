@@ -22,7 +22,7 @@ namespace Zenko.Services
             {
                 throw new System.Exception("Cannot have more pieces than available positions");
             }
-            pieceTypeCombos = GetPossiblePieceCombinations(map.GetPieceTypes(), pieceAmountToUse);
+            pieceTypeCombos = PieceTypeService.GetPossiblePieceCombinations(map.GetPieceTypes(), pieceAmountToUse);
             iterators = new int[pieceAmountToUse];
 
             //initialize iterators ie. 0,1,2,3
@@ -147,97 +147,6 @@ namespace Zenko.Services
             // Logger.Log("C");
 
             return true;
-        }
-
-        //Eventually revisit
-        //TODO: SHOULD RETURN SORTED AND NO DUPLICATES
-        static List<List<PieceType>> GetPossiblePieceCombinations(PieceType[] pieces, int k)
-        {
-            List<List<PieceType>> answer = new List<List<PieceType>>();
-            List<PieceType> temp = new List<PieceType>();
-            int n = pieces.Length;
-            MakeComboUtil(n, 1, k);
-            void MakeComboUtil(int curN, int left, int curK)
-            {
-                //Last iteration
-                if (curK == 0)
-                {
-                    List<PieceType> newCombo = new List<PieceType>(temp);
-
-                    if (AnswerContains(newCombo))
-                    {
-                        return;
-                    }
-
-                    //TODO: SORT BY REPEATED?
-                    answer.Add(newCombo);
-                    // Debug.Log(temp);
-                    string printInt = "";
-                    for (int i = 0; i < temp.Count; i++)
-                    {
-                        printInt += temp[i].ToString();
-                        // Console.Write(temp[i] + " ");
-                    }
-                    // Debug.Log(printInt);
-                    // Console.WriteLine();
-                    return;
-                }
-
-                // i iterates from left to n. First time
-                // left will be 1
-                for (int i = left; i <= curN; ++i)
-                {
-                    temp.Add(pieces[i - 1]);
-                    MakeComboUtil(curN, i + 1, curK - 1);
-
-                    // Popping out last inserted element
-                    // from the V
-                    // if (curK != 1)
-                    temp.RemoveAt(temp.Count - 1);
-                }
-            }
-            bool AnswerContains(List<PieceType> pieceCombo)
-            {
-                foreach (List<PieceType> currentPieceCombo in answer)
-                {
-                    if (ScrambledEquals(currentPieceCombo, pieceCombo))
-                    {
-                        return true;
-                    }
-                }
-                return false;
-
-            }
-            return answer;
-        }
-
-        //Check if lists match regardless of order
-        public static bool ScrambledEquals<T>(IEnumerable<T> list1, IEnumerable<T> list2)
-        {
-            var cnt = new Dictionary<T, int>();
-            foreach (T s in list1)
-            {
-                if (cnt.ContainsKey(s))
-                {
-                    cnt[s]++;
-                }
-                else
-                {
-                    cnt.Add(s, 1);
-                }
-            }
-            foreach (T s in list2)
-            {
-                if (cnt.ContainsKey(s))
-                {
-                    cnt[s]--;
-                }
-                else
-                {
-                    return false;
-                }
-            }
-            return cnt.Values.All(c => c == 0);
         }
     }
 }
