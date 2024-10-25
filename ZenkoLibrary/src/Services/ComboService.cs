@@ -13,7 +13,27 @@ namespace Zenko.Services
         int currentPieceTypeComboIndex;
         List<V2Int> positions;
         List<List<PieceType>> pieceTypeCombos;
+        bool freshSet;
 
+        public ComboService(TileSet tileSet, PieceType[] pieceTypes, int pieceAmountToUse)
+        {
+            positions = TileSetUtilities.GetCandidateTilePositions(tileSet);
+            if (positions.Count < pieceTypes.Length)
+            {
+                throw new System.Exception("Cannot have more pieces than available positions");
+            }
+            pieceTypeCombos = PieceTypeService.GetPossiblePieceCombinations(pieceTypes, pieceAmountToUse);
+            iterators = new int[pieceAmountToUse];
+
+            //initialize iterators ie. 0,1,2,3
+            for (int i = 0; i < iterators.Length; i++)
+            {
+                iterators[i] = i;
+            }
+
+            currentPieceTypeComboIndex = 0;
+            freshSet = true;
+        }
 
         public ComboService(Map map, int pieceAmountToUse)
         {
@@ -32,6 +52,19 @@ namespace Zenko.Services
             }
 
             currentPieceTypeComboIndex = 0;
+            freshSet = true;
+        }
+
+        public bool TryGetNextCombo(out Combo combo)
+        {
+            //returns true even for cases of 0 iterators
+            if (freshSet)
+            {
+                combo = GetCurrentCombo();
+                freshSet = false;
+                return true;
+            }
+            return TryNextRecursive(iterators.Length - 1, out combo);
         }
 
         public Combo GetCurrentCombo()
@@ -49,7 +82,13 @@ namespace Zenko.Services
 
         public bool TryNextRecursive(int k, out Combo combo)
         {
-            combo = new Combo();
+            combo = new Combo(new List<V2Int>(), new List<string>());
+
+            //For cases of 0 pieces
+            if (iterators.Length == 0)
+            {
+                return false;
+            }
 
             //if iterator already at last it means previous one is calling it since it reached positions.Count
             if (iterators[k] == positions.Count)

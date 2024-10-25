@@ -93,15 +93,15 @@ namespace Zenko.Controllers
             for (int i = 0; i <= pieceTypes.Length; i++)
             {
                 bool found = false;
-                List<Dictionary<V2Int, string>> piecePositionCombos = SolverUtilities.GetPiecePositionCombinations(pieceTypes, tileSet, i);
-                foreach (Dictionary<V2Int, string> combo in piecePositionCombos)
+                ComboService comboService = new ComboService(tileSet, pieceTypes, i);
+                while (comboService.TryGetNextCombo(out Combo combo))
                 {
                     TileSet tileSetToTest = tileSet.Clone();
                     if (DEBUG || DEBUG_GOOD) Logger.Log("New combo");
-                    foreach (KeyValuePair<V2Int, string> piecePosition in combo)
+                    for (int j = 0; j < combo.positions.Count; j++)
                     {
-                        if (DEBUG || DEBUG_GOOD) Logger.Log(piecePosition.Value + " " + piecePosition.Key);
-                        TileSetController.PlacePiece(tileSetToTest, new Piece(piecePosition.Key, piecePosition.Value));
+                        if (DEBUG || DEBUG_GOOD) Logger.Log(combo.positions[j] + " " + combo.pieceTypes[j]);
+                        TileSetController.PlacePiece(tileSetToTest, new Piece(combo.positions[j], combo.pieceTypes[j]));
                     }
                     // solverService.TrySolveBoardOld(tileSetToTest, out Solution newSolution);
                     // TrySolveBoard(tileSetToTest, out newSolution);

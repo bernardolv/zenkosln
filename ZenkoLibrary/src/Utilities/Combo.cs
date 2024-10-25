@@ -11,6 +11,11 @@ public struct Combo
     {
         this.positions = positions;
         this.pieceTypes = pieceTypes;
+
+        if (positions.Count != pieceTypes.Count)
+        {
+            throw new System.Exception("Combo mismatch count of positions and piecetypes");
+        }
     }
 
     public bool Equals(Combo combo)

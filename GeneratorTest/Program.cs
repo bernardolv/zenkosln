@@ -16,7 +16,7 @@ public class Program
     public static void Main()
     {
         // TestAlgorhithmSpeeds();
-        // TestAlgorhithm(1);
+        TestAlgorhithm(1);
         // TestSpecificMap("processkiller.txt", 2);
         // Console.WriteLine(GC.GetTotalMemory(true));
         // TestComboMemory("processkiller.txt", 1);
@@ -25,7 +25,7 @@ public class Program
         // TestComboModesAreEqual("processkiller.txt", 1);
         // TestComboService("processkiller.txt", 1);
         // TestComboServiceMemory("processkiller.txt", 1);
-        TestRegularComboMemory("processkiller.txt", 1);
+        // TestRegularComboMemory("processkiller.txt", 1);
     }
 
     static void TestRegularComboMemory(string file, int mapNumber)
@@ -69,16 +69,18 @@ public class Program
         repositoryService.InitializeRepository(file);
         Map map = repositoryService.GetMap(mapNumber);
 
-        List<Combo> combos = SolverUtilities.Test(map.GetPieceTypes(), map.GetTileSet(), 4);
+        map.SetPieces(new Piece[] { new Piece(1, 1, "PU"), new Piece(2, 2, "P"), new Piece(3, 3, "P"), new Piece(4, 4, "P") });
+
+        List<Combo> combos = SolverUtilities.Test(map.GetPieceTypes(), map.GetTileSet(), 2);
         Logger.Log(combos.Count);
 
-        ComboService comboService = new ComboService(map, 4);
-        if (!comboService.GetCurrentCombo().Equals(combos[0]))
-        {
-            Logger.Log("MISMATCH 0");
-        }
-        int i = 1;
-        while (comboService.TryNextRecursive(3, out Combo combo))
+        ComboService comboService = new ComboService(map, 2);
+        // if (!comboService.GetCurrentCombo().Equals(combos[0]))
+        // {
+        //     Logger.Log("MISMATCH 0");
+        // }
+        int i = 0;
+        while (comboService.TryGetNextCombo(out Combo combo))
         {
             // Logger.Log(combo.GetPositionsString());
             // Logger.Log(combos[i].GetPositionsString());
