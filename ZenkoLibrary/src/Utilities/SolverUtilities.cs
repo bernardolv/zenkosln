@@ -2,16 +2,7 @@ using System.Collections.Generic;
 using Zenko.Entities;
 using System.Linq;
 
-public struct Combo
-{
-    public List<V2Int> positions;
-    public List<string> pieceTypes;
-    public Combo(List<V2Int> positions, List<string> pieceTypes)
-    {
-        this.positions = positions;
-        this.pieceTypes = pieceTypes;
-    }
-}
+
 
 namespace Zenko.Utilities
 {

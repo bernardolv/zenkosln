@@ -1,5 +1,6 @@
 ﻿
 using System.Diagnostics;
+using System.Numerics;
 using System.Runtime.CompilerServices;
 using System.Text.Json;
 using System.Text.Json.Serialization;
@@ -21,7 +22,42 @@ public class Program
         // TestComboMemory("processkiller.txt", 1);
         // Console.WriteLine(GC.GetTotalMemory(true));
         // PieceComboMemory("processkiller.txt", 1, 0);
-        TestComboModesAreEqual("processkiller.txt", 1);
+        // TestComboModesAreEqual("processkiller.txt", 1);
+        TestComboService("processkiller.txt", 1);
+    }
+
+    static void TestComboService(string file, int mapNumber)
+    {
+        RepositoryService repositoryService = new RepositoryService();
+        repositoryService.InitializeRepository(file);
+        Map map = repositoryService.GetMap(mapNumber);
+
+        List<Combo> combos = SolverUtilities.Test(map.GetPieceTypes(), map.GetTileSet(), 4);
+        Logger.Log(combos.Count);
+
+        ComboService comboService = new ComboService(map, 4);
+        if (!comboService.GetCurrentCombo().Equals(combos[0]))
+        {
+            Logger.Log("MISMATCH 0");
+        }
+        int i = 1;
+        while (comboService.TryNextRecursive(3, out Combo combo))
+        {
+            // Logger.Log(combo.GetPositionsString());
+            // Logger.Log(combos[i].GetPositionsString());
+            if (!combo.Equals(combos[i]))
+            {
+                Logger.Log(combo.GetPositionsString());
+                Logger.Log(combos[i].GetPositionsString());
+                Logger.Log("MISMATCH " + i);
+
+                return;
+            }
+
+            i++;
+        }
+        Logger.Log(i);
+
     }
 
     static void TestComboModesAreEqual(string file, int mapNumber)
