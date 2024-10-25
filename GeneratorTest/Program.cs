@@ -16,8 +16,8 @@ public class Program
     public static void Main()
     {
         // TestAlgorhithmSpeeds();
-        TestAlgorhithm(1);
-        // TestSpecificMap("processkiller.txt", 2);
+        // TestAlgorhithm(1);
+        TestSpecificMap("processkiller.txt", 1);
         // Console.WriteLine(GC.GetTotalMemory(true));
         // TestComboMemory("processkiller.txt", 1);
         // Console.WriteLine(GC.GetTotalMemory(true));
@@ -261,13 +261,7 @@ public class Program
         repositoryService.InitializeRepository(file);
         Map map = repositoryService.GetMap(mapNumber);
 
-        bool solved = SolutionController.TrySolveWithPiecesNew(map.GetTileSet(), map.GetPieceTypes(), out Solution solution, 2);
-
-
-
-
-
-
+        bool solved = SolutionController.TrySolveWithPiecesNew(map.GetTileSet(), map.GetPieceTypes(), out Solution solution, 1);
 
         Console.WriteLine(solved);
         if (!solved)
