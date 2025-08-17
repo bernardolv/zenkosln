@@ -64,7 +64,7 @@ namespace Zenko.Services
                             continue;
                         }
 
-                        //TODO: Skip bad portals too
+                        //TODO: Skip bad portals too. what that means...
 
                         totalStates++;
                         TileSetStateHolder newGameState = currentGameState.Copy();
@@ -76,6 +76,7 @@ namespace Zenko.Services
                         int actionTurns = 0;
                         while (traveling)
                         {
+                            V3 pastDirection = currentDirection;
                             actionTurns++;
 
                             V3 targetPosition = TileSetUtilities.TryGetNextActions(newTileSet, newTileSet.GetPlayerPosition().ToViewCoordinates(), currentDirection, out List<BoardAction> boardActions);
@@ -134,7 +135,7 @@ namespace Zenko.Services
 
                             if (boardActions.Contains(BoardAction.Portal))
                             {
-                                if (PieceUtilities.IsPortalPortable(direction.ToModelCoordinates(), tileSet.GetPieceAt(targetPosition.ToModelCoordinates()), tileSet))
+                                if (PieceUtilities.IsPortalPortable(pastDirection.ToModelCoordinates(), tileSet.GetPieceAt(targetPosition.ToModelCoordinates()), tileSet))
                                 {
                                     Piece matchingPortal = PieceUtilities.GetMatchingPortal(tileSet, targetPosition.ToModelCoordinates());
                                     newGameState.playerPosition = matchingPortal.GetPosition();
@@ -153,7 +154,7 @@ namespace Zenko.Services
                             if (boardActions.Contains(BoardAction.Fragile) || boardActions.Contains(BoardAction.Seed))
                             {
                                 if (DEBUG) Logger.Log("Seed on " + targetPosition.ToString());
-                                newTileSet.GetTile((int)targetPosition.x, -(int)targetPosition.z).GetTileType();
+                                // newTileSet.GetTile((int)targetPosition.x, -(int)targetPosition.z).GetTileType();
                                 // newTileSet = newTileSet.Clone();
                             }
                         }
@@ -291,6 +292,7 @@ namespace Zenko.Services
                         int actionTurns = 0;
                         while (traveling)
                         {
+                            V3 pastDirection = currentDirection;
                             actionTurns++;
 
                             V3 targetPosition = TileSetUtilities.TryGetNextActions(newTileSet, newTileSet.GetPlayerPosition().ToViewCoordinates(), currentDirection, out List<BoardAction> boardActions);
@@ -341,7 +343,7 @@ namespace Zenko.Services
 
                             if (boardActions.Contains(BoardAction.Portal))
                             {
-                                if (PieceUtilities.IsPortalPortable(direction.ToModelCoordinates(), tileSet.GetPieceAt(targetPosition.ToModelCoordinates()), tileSet))
+                                if (PieceUtilities.IsPortalPortable(pastDirection.ToModelCoordinates(), tileSet.GetPieceAt(targetPosition.ToModelCoordinates()), tileSet))
                                 {
                                     Piece matchingPortal = PieceUtilities.GetMatchingPortal(tileSet, targetPosition.ToModelCoordinates());
                                     newGameState.playerPosition = matchingPortal.GetPosition();
