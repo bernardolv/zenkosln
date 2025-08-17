@@ -17,6 +17,7 @@ namespace Zenko.Entities
         int turns;
         int frontalWind;
         int portalBlocked;
+        //windstop
 
         /////////////////////////
         //     CONSTRUCTORS    //
@@ -68,6 +69,12 @@ namespace Zenko.Entities
             // Logger.Log("Portal blocked");
             portalBlocked++;
         }
+
+        public void SetTurns(int turns)
+        {
+            this.turns = turns;
+        }
+
         /////////////////////////
         //    HELPER METHODS   //
         /////////////////////////

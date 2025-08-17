@@ -10,7 +10,7 @@ namespace Zenko.Services
 {
     public class MapGeneratorService
     {
-        const bool DEBUG = true;
+        const bool DEBUG = false;
         int intervalToPrint = 0;
         int attempts;
         LevelSettings levelSettings;

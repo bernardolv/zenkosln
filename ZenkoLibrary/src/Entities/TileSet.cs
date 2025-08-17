@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using Zenko.Presets;
 using Zenko.Extensions;
+using System;
 
 namespace Zenko.Entities
 {
@@ -39,6 +40,17 @@ namespace Zenko.Entities
         public List<V2Int> poppedSeedPositions = new List<V2Int>();
         public List<V2Int> fragileConvertedPositions = new List<V2Int>();
 
+
+        ////////////////////////
+        //       EVENTS       //
+        ////////////////////////
+
+        public event Action<V2Int> OnPieceHit;
+        public event Action<V2Int> OnPushedByWind;
+        public event Action<V2Int> OnPortalUsed;
+        public event Action<V2Int> OnStoppedOnSeed;
+        public event Action<V2Int> OnFrontalWind;
+        public event Action<V2Int> OnPortalBlocked;
 
         /////////////////////////
         //     CONSTRUCTORS    //
@@ -222,6 +234,35 @@ namespace Zenko.Entities
                 }
             }
             throw new System.Exception("No piece at " + position);
+        }
+
+        //////////////////////////
+        //    EVENT INVOKERS    //
+        //////////////////////////
+
+        public void InvokeOnPieceHit(V2Int position)
+        {
+            OnPieceHit?.Invoke(position);
+        }
+        public void InvokeOnPushedByWind(V2Int position)
+        {
+            OnPushedByWind?.Invoke(position);
+        }
+        public void InvokeOnPortalUsed(V2Int position)
+        {
+            OnPortalUsed?.Invoke(position);
+        }
+        public void InvokeOnStoppedOnSeed(V2Int position)
+        {
+            OnStoppedOnSeed?.Invoke(position);
+        }
+        public void InvokeOnFrontalWind(V2Int position)
+        {
+            OnFrontalWind?.Invoke(position);
+        }
+        public void InvokeOnPortalBlocked(V2Int position)
+        {
+            OnPortalBlocked?.Invoke(position);
         }
     }
 }

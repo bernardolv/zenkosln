@@ -92,7 +92,7 @@ namespace Zenko.Entities
             string line = "";
             foreach (Piece piece in pieces)
             {
-                line += piece.GetIdentifier() + " " + piece.GetX() + "" + piece.GetY() + " ";
+                line += piece.GetIdentifier() + "" + piece.GetX() + "" + piece.GetY() + " ";
             }
             line += "T" + turns;
             Logger.Log(line);

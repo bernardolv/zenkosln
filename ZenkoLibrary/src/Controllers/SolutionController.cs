@@ -85,7 +85,7 @@ namespace Zenko.Controllers
         }
 
         //Handle up to how many pieces?
-        public static bool TrySolveWithPiecesNew(TileSet tileSet, PieceType[] pieceTypes, out Solution solution, int method = 0)
+        public static bool TrySolveWithPiecesNew(TileSet tileSet, PieceType[] pieceTypes, out Solution solution, int method = 1)
         {
             solution = null;
             SolverService solverService = new SolverService();
