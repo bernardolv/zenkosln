@@ -12,8 +12,8 @@ namespace Repositories
         //      PROPERTIES     //
         /////////////////////////
 
-        public string[] lines;
         public int[] pointers;
+        string filePath;
 
         public int LevelCount
         {
@@ -30,41 +30,52 @@ namespace Repositories
 
         public void InitializeRepository(string filePath)
         {
-            lines = SplitString(File.ReadAllText(filePath));
-            SetPointers();
+            this.filePath = filePath;
+
+            List<int> pointerList = new List<int>();
+            pointerList.Add(0);
+            int lineCount = 0;
+            bool lastWasEmpty = false;
+            foreach (string line in File.ReadLines(filePath))
+            {
+                if (string.IsNullOrWhiteSpace(line))
+                {
+                    //This is a fail safe for bad formatting
+                    if (lastWasEmpty)
+                    {
+                        Console.Error.WriteLine("We had two empty lines next to each other so we stop pointer seeking there at line " + lineCount);
+                        break;
+                    }
+                    lastWasEmpty = true;
+                }
+                else
+                {
+                    if (lastWasEmpty)
+                    {
+                        pointerList.Add(lineCount);
+                    }
+                    lastWasEmpty = false;
+                }
+                lineCount++;
+            }
+            pointers = pointerList.ToArray();
         }
 
         /////////////////////////
         // GETTERS AND SETTERS //
         /////////////////////////
 
-        //detects white space and sets index to place after it
-        public void SetPointers()
-        {
-            List<int> pointerList = new List<int>();
-            pointerList.Add(0);
-            for (int i = 1; i < lines.Length - 1; i++)
-            {
-                if (string.IsNullOrWhiteSpace(lines[i]))
-                {
-                    pointerList.Add(i + 1);
-                }
-            }
-
-            //setpointers
-            pointers = pointerList.ToArray();
-        }
-
         public Map GetMap(int levelNumber)
         {
-            Map map = MapFactory.Map(GetLevelLines(levelNumber), levelNumber);
+            string[] lines = GetLevelLines(levelNumber);
+            Map map = MapFactory.Map(lines, levelNumber);
             return map;
         }
 
         public string[] GetLevelLines(int levelNumber)
         {
             int levelIndex = levelNumber - 1;
-            //validate levelNumber
+
             if (levelIndex < 0)
             {
                 Logger.LogError("Level number should be higher than 0");
@@ -78,11 +89,35 @@ namespace Repositories
 
             List<string> levelLines = new List<string>();
             int initialLine = pointers[levelIndex];
-            int i = 0;
-            while (initialLine + i < lines.Length && !string.IsNullOrWhiteSpace(lines[initialLine + i]))
+
+            int lineNumber = 0;
+            foreach (string line in File.ReadLines(filePath))
             {
-                levelLines.Add(lines[initialLine + i]);
-                i++;
+                if (lineNumber < initialLine)
+                {
+                    //Do nothing
+                }
+                else if (lineNumber == initialLine)
+                {
+                    if (string.IsNullOrWhiteSpace(line))
+                    {
+                        Console.Error.WriteLine("Level is empty");
+                        return null;
+                    }
+                    levelLines.Add(line);
+                }
+                else
+                {
+                    //We have reached the end if its a whitespace
+                    if (string.IsNullOrWhiteSpace(line))
+                    {
+                        break;
+                    }
+
+                    levelLines.Add(line);
+                }
+
+                lineNumber++;
             }
 
             return levelLines.ToArray();

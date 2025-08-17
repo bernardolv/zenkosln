@@ -1,6 +1,7 @@
 ﻿
 using System.Diagnostics;
 using System.Runtime.CompilerServices;
+using System.Text;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 using Repositories;
@@ -14,8 +15,12 @@ using Zenko.Utilities;
 public class Program
 {
     //Todo get args to do -v
-    public static void Main(string[] args)
+    public static async Task Main(string[] args)
     {
+        HttpClient client = new HttpClient();
+        bool post = false;
+        string url = "";
+
         bool v = false;
         string filePath = "";
 
@@ -40,6 +45,16 @@ public class Program
                         return;
                     }
                     filePath = args[i + 1];
+                    i++;
+                    break;
+                case "-p":
+                    if (i + 1 >= args.Length)
+                    {
+                        Console.WriteLine("You need to specify the endpoint url after the -p flag");
+                        return;
+                    }
+                    post = true;
+                    url = args[i + 1];
                     i++;
                     break;
                 default:
@@ -93,6 +108,28 @@ public class Program
 
             }
             conditions.Print();
+
+            if (post)
+            {
+                string json = JsonSerializer.Serialize(new BackendMap(map, solution, conditions));
+                var httpContent = new StringContent(json, Encoding.UTF8, "application/json");
+                try
+                {
+                    // Send the PUT request
+                    HttpResponseMessage response = await client.PostAsync(url, httpContent);
+
+                    // Check if the request was successful
+                    response.EnsureSuccessStatusCode();
+
+                    // Read the response from the server (optional)
+                    string responseBody = await response.Content.ReadAsStringAsync();
+                    Console.WriteLine("Post request successful. Response: " + responseBody);
+                }
+                catch (HttpRequestException e)
+                {
+                    Console.Error.WriteLine($"Error sending Post request: {e.Message}");
+                }
+            }
         }
     }
 }

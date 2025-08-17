@@ -75,6 +75,41 @@ namespace Zenko.Entities
             this.turns = turns;
         }
 
+        public int GetWindsUsed()
+        {
+            return windsUsed;
+        }
+
+        public int GetPortalsUsed()
+        {
+            return portalsUsed;
+        }
+
+        public int GetStoppedOnSeed()
+        {
+            return stoppedOnSeed;
+        }
+
+        public int GetPiecesHit()
+        {
+            return piecesHit;
+        }
+
+        public int GetTurns()
+        {
+            return turns;
+        }
+
+        public int GetFrontalWind()
+        {
+            return frontalWind;
+        }
+
+        public int GetPortalBlocked()
+        {
+            return portalBlocked;
+        }
+
         /////////////////////////
         //    HELPER METHODS   //
         /////////////////////////
