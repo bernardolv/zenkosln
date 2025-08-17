@@ -14,10 +14,41 @@ using Zenko.Utilities;
 public class Program
 {
     //Todo get args to do -v
-    public static void Main()
+    public static void Main(string[] args)
     {
         bool v = false;
-        string filePath = "testmap.txt";
+        string filePath = "";
+
+        //parse args
+        if (!args.Contains("-f"))
+        {
+            Console.WriteLine("You need to specify the file with the -f flag");
+            return;
+        }
+
+        for (int i = 0; i < args.Length; i++)
+        {
+            switch (args[i])
+            {
+                case "-v":
+                    v = true;
+                    break;
+                case "-f":
+                    if (i + 1 >= args.Length)
+                    {
+                        Console.WriteLine("You need to specify the file with the -f flag");
+                        return;
+                    }
+                    filePath = args[i + 1];
+                    i++;
+                    break;
+                default:
+                    Console.WriteLine("Invalid arg " + args[i]);
+                    return;
+            }
+        }
+
+
         RepositoryService repositoryService = new RepositoryService();
         repositoryService.InitializeRepository(filePath);
 
@@ -33,18 +64,23 @@ public class Program
                 PieceType[] pieceTypes = map.GetPieceTypes();
                 foreach (PieceType p in pieceTypes)
                 {
-                    // Console.WriteLine(p.ToString());
+                    Console.WriteLine(p.ToString());
                 }
             }
 
-
-            //Does not modify tileset, it clones it and modifies that one once inside
-            SolutionController.TrySolveWithPiecesNew(map.GetTileSet(), map.GetPieceTypes(), out Solution solution, 1);
-
-            // Console.WriteLine("CONDITIONS NOW");
+            //First get solution
+            if (!SolutionController.TrySolveWithPiecesNew(map.GetTileSet(), map.GetPieceTypes(), out Solution solution, 1))
+            {
+                //No solution was found we can skip
+                Console.Error.WriteLine("SKIPPING MAP: ");
+                foreach (string line in map.GetPrintLines())
+                {
+                    Console.Error.WriteLine(line);
+                }
+                continue;
+            }
 
             Conditions conditions = ConditionsController.GetConditions(map, solution);
-
 
             if (v)
             {
@@ -57,21 +93,6 @@ public class Program
 
             }
             conditions.Print();
-
         }
-
-
     }
-
-    static string GetBackendJson(Map map, Solution solution, Conditions conditions)
-    {
-        string result = "";
-
-        return result;
-    }
-
-    // static Conditions GetMapConditions(Map map, Solution solution)
-    // {
-
-    // }
 }

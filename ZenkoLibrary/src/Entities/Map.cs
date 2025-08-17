@@ -94,5 +94,11 @@ namespace Zenko.Entities
                 Logger.Log(line);
             }
         }
+
+        public string[] GetPrintLines()
+        {
+            List<string> lines = MapService.ConvertToStringArray(this);
+            return lines.ToArray();
+        }
     }
 }
