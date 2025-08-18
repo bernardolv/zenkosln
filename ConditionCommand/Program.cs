@@ -64,14 +64,9 @@ public class Program
         }
 
 
-        RepositoryService repositoryService = new RepositoryService();
-        repositoryService.InitializeRepository(filePath);
-
         //Tesst first map only
-        for (int i = 1; i <= repositoryService.LevelCount; i++)
+        foreach (Map map in GetMaps(filePath))
         {
-            //1. Parse map
-            Map map = repositoryService.GetMap(i);
             //1.1 Print relevant data to debug
             if (v)
             {
@@ -109,6 +104,7 @@ public class Program
             }
             conditions.Print();
 
+            //Post to DB
             if (post)
             {
                 string json = JsonSerializer.Serialize(new BackendMap(map, solution, conditions));
@@ -130,6 +126,32 @@ public class Program
                     Console.Error.WriteLine($"Error sending Post request: {e.Message}");
                 }
             }
+        }
+    }
+
+    static IEnumerable<Map> GetMaps(string filePath)
+    {
+        List<string> levelLines = new List<string>();
+        int levelNumber = 1;
+
+        foreach (string line in File.ReadLines(filePath))
+        {
+            if (string.IsNullOrWhiteSpace(line))
+            {
+                if (levelLines.Count() > 0)
+                {
+                    yield return MapFactory.Map(levelLines.ToArray(), levelNumber);
+                    levelLines.Clear();
+                    levelNumber++;
+                }
+                continue;
+            }
+            levelLines.Add(line);
+        }
+
+        if (levelLines.Count() > 0)
+        {
+            yield return MapFactory.Map(levelLines.ToArray(), levelNumber);
         }
     }
 }
