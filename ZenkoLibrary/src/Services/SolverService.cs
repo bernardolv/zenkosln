@@ -51,6 +51,7 @@ namespace Zenko.Services
                     // Dictionary<V3, V2Int> directionMap = new Dictionary
                     foreach (V3 direction in directions)
                     {
+                        Console.WriteLine("Move");
                         //shallow copy, only make a deep copy if state changes
                         TileSet newTileSet = currentGameState.tileSet;
                         newTileSet.SetPlayerPosition(currentGameState.playerPosition);
@@ -74,6 +75,7 @@ namespace Zenko.Services
                         newGameState.moves.Add(direction.ToModelCoordinates());
                         bool traveling = true;
                         int actionTurns = 0;
+                        bool infinite = false;
                         while (traveling)
                         {
                             V3 pastDirection = currentDirection;
@@ -149,7 +151,9 @@ namespace Zenko.Services
                             {
                                 // Logger.LogError("Probably stuck in an infinite loop");
                                 newGameState.playerPosition = currentGameState.playerPosition;
-                                traveling = false;
+                                traveling = false; //maybe not needed
+                                infinite = true;
+                                break;
                             }
                             if (boardActions.Contains(BoardAction.Fragile) || boardActions.Contains(BoardAction.Seed))
                             {
@@ -179,6 +183,12 @@ namespace Zenko.Services
                         if (exploredGameStates.ContainsKey(newGameState.tileSet) && exploredGameStates[newGameState.tileSet].ContainsKey(newGameState.playerPosition))
                         {
                             if (DEBUG) Logger.Log("Explored state exists");
+                            continue;
+                        }
+
+                        if (infinite)
+                        {
+                            if (DEBUG) Logger.Log("It's infinite state so we remove");
                             continue;
                         }
 
@@ -290,6 +300,7 @@ namespace Zenko.Services
                         newGameState.moves.Add(direction.ToModelCoordinates());
                         bool traveling = true;
                         int actionTurns = 0;
+                        bool infinite = false;
                         while (traveling)
                         {
                             V3 pastDirection = currentDirection;
@@ -358,6 +369,8 @@ namespace Zenko.Services
                                 // Logger.LogError("Probably stuck in an infinite loop");
                                 newGameState.playerPosition = currentGameState.playerPosition;
                                 traveling = false;
+                                infinite = true;
+                                break;
                             }
                             if (boardActions.Contains(BoardAction.Fragile) || boardActions.Contains(BoardAction.Seed))
                             {
@@ -388,6 +401,12 @@ namespace Zenko.Services
                         if (exploredGameStates.ContainsKey(newGameState.modifiedTiles) && exploredGameStates[newGameState.modifiedTiles].ContainsKey(newGameState.playerPosition))
                         {
                             if (DEBUG) Logger.Log("Explored state exists");
+                            continue;
+                        }
+
+                        if (infinite)
+                        {
+                            if (DEBUG) Logger.Log("It's infinite state so we remove");
                             continue;
                         }
 
