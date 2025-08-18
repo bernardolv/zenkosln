@@ -51,7 +51,6 @@ namespace Zenko.Services
                     // Dictionary<V3, V2Int> directionMap = new Dictionary
                     foreach (V3 direction in directions)
                     {
-                        Console.WriteLine("Move");
                         //shallow copy, only make a deep copy if state changes
                         TileSet newTileSet = currentGameState.tileSet;
                         newTileSet.SetPlayerPosition(currentGameState.playerPosition);
