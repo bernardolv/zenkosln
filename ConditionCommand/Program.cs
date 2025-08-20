@@ -123,6 +123,11 @@ public class Program
                 catch (HttpRequestException e)
                 {
                     Console.Error.WriteLine($"Error sending Post request: {e.Message}");
+                    foreach (string line in map.GetPrintLines())
+                    {
+                        Console.Error.WriteLine(line);
+                    }
+                    break;
                 }
             }
         }
